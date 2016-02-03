@@ -62,7 +62,8 @@ begin
   `git checkout -q #{current}`
   git = Git.open(Dir.pwd, :log => log)
   puts 'Date;Author;Insertions;Deletions;Modifications;Drift'
-  git.log(100000).each do |commit|
+  git.log(10000000).each do |commit|
+    next if commit.parents.size > 1 # Exclude merge commits
     date = commit.author.date
     if day.nil? or day.other_day?(date)
       logDay(git, day) unless day.nil?
